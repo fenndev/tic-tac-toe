@@ -2,10 +2,13 @@ const gameManager = (() => {
     const runGame = () => {
         boardManager.createBoard();
         displayManager.displayBoard(boardManager.boardArray);
-        console.log(boardManager.boardArray);
+        for (cell in boardManager.boardArray) {
+            console.log(boardManager.boardArray[cell].boardIndex);
+            console.log(boardManager.getBoardNeighbors(boardManager.boardArray[cell]));
+        }
     }
 
-    return { runGame };
+    return { runGame }; 
 })();
 
 // Manages the board's data
@@ -27,21 +30,22 @@ const boardManager = (() => {
     }
 
     const getHorizontalNeighbors = (cell) => {
+        let boardIndex = cell.boardIndex;
         switch (cell.getCellCol()) {
             case 0:
                 return {
-                    vertNeighborOne : boardIndex + 1,
-                    vertNeighborTwo : vertNeighborOne + 1
+                    horizontalNeighborOne: boardIndex + 1,
+                    horizontalNeighborTwo: boardIndex + 2
                 }
             case 1:
                 return {
-                    vertNeighborOne : boardIndex + 1,
-                    vertNeighborTwo : boardIndex - 1
+                    horizontalNeighborOne: boardIndex + 1,
+                    horizontalNeighborTwo: boardIndex - 1
                 }
-            default:
+            case 2:
                 return {
-                    vertNeighborOne : boardIndex - 1,
-                    vertNeighborTwo : vertNeighborOne - 1
+                    horizontalNeighborOne: boardIndex - 1,
+                    horizontalNeighborTwo: boardIndex - 2
                 }
         }
     }
@@ -51,18 +55,18 @@ const boardManager = (() => {
         switch (cell.getCellRow()) {
             case 0:
                 return {
-                    vertNeighborOne : boardIndex + 3,
-                    vertNeighborTwo : vertNeighborOne + 3
+                    vertNeighborOne: boardIndex + 3,
+                    vertNeighborTwo: boardIndex + 6
                 }
             case 1:
                 return {
-                    vertNeighborOne : boardIndex + 3,
-                    vertNeighborTwo : boardIndex - 3
+                    vertNeighborOne: boardIndex + 3,
+                    vertNeighborTwo: boardIndex - 3
                 }
-            default:
+            case 2:
                 return {
-                    vertNeighborOne : boardIndex - 3,
-                    vertNeighborTwo : vertNeighborOne - 3
+                    vertNeighborOne: boardIndex - 3,
+                    vertNeighborTwo: boardIndex - 6
                 }
         }
     }
@@ -80,7 +84,7 @@ const displayManager = (() => {
     }
 
     const markCell = () => {
-        
+
     }
     return { displayBoard, markCell }
 })();
@@ -105,14 +109,16 @@ const boardCell = (boardIndex) => {
     const cellDiv = document.createElement('div');
 
     const getCellCol = () => {
-        return (boardIndex % 3) + 1;
+        console.log((boardIndex % 3));
+        return (boardIndex % 3);
     }
 
     const getCellRow = () => {
-        return (boardIndex % 3) + 1;
+        console.log((boardIndex) % 3);
+        return (boardIndex % 3);
     }
 
     return { boardIndex, getCellCol, getCellRow, cellDiv }
-}
+}   
 
 gameManager.runGame();
