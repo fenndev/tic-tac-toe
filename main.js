@@ -1,11 +1,24 @@
-const gameBoard = (() => {
+const gameManager = (() => {
+    const runGame = () => {
+        boardManager.createBoard();
+        displayManager.displayBoard(boardManager.boardArray);
+        console.log(boardManager.boardArray);
+    }
+
+    return { runGame };
+})();
+
+// Manages the board's data
+const boardManager = (() => {
     let boardArray = [];
 
     const createBoard = () => {
         let counter = 0;
-        while(counter > 8) {
-            let newCell = new boardCell(counter);
+        while(counter < 8) {
+            let newCell = boardCell(counter);
+            newCell.cellDiv.addEventListener('click', () => boardManager.addMark());
             boardArray.push(newCell);
+            counter++;
         }
     }
 
@@ -54,25 +67,22 @@ const gameBoard = (() => {
         }
     }
 
-    return { boardArray, getBoardNeighbors }
+    return { boardArray, createBoard, getBoardNeighbors }
 })();
 
+// Responsible for updating the display
 const displayManager = (() => {
-    let boardDisplay = document.querySelector("board-display");
-    let displayBoard = () => {
-        gameBoard.boardArray.forEach(cell => {
-            let displayCell = document.createElement('div');
-            displayCell.addEventListener('click', () => {
-
-            });
-            boardDisplay.appendChild(displayCell);
+    const boardDisplay = document.querySelector(".board-box");
+    let displayBoard = (boardArray) => {
+        boardArray.forEach(cell => {
+            boardDisplay.appendChild(cell.cellDiv);
         });
     }
 
     const markCell = () => {
-
+        
     }
-
+    return { displayBoard, markCell }
 })();
 
 const turnManager = (() => {
@@ -92,6 +102,8 @@ let Player = (name) => {
 
 const boardCell = (boardIndex) => {
 
+    const cellDiv = document.createElement('div');
+
     const getCellCol = () => {
         return (boardIndex % 3) + 1;
     }
@@ -100,9 +112,7 @@ const boardCell = (boardIndex) => {
         return (boardIndex % 3) + 1;
     }
 
-    return { boardIndex, getCellCol, getCellRow }
-} 
+    return { boardIndex, getCellCol, getCellRow, cellDiv }
+}
 
-const gameManager = (() => {
-
-})();
+gameManager.runGame();
