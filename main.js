@@ -1,5 +1,13 @@
 const gameBoard = (() => {
-    let boardArray = {};
+    let boardArray = [];
+
+    const createBoard = () => {
+        let counter = 0;
+        while(counter > 8) {
+            let newCell = new boardCell(counter);
+            boardArray.push(newCell);
+        }
+    }
 
     const getBoardNeighbors = (cell) => {
         return [ getVerticalNeighbors(cell), getHorizontalNeighbors(cell) ]
@@ -45,18 +53,36 @@ const gameBoard = (() => {
                 }
         }
     }
+
+    return { boardArray, getBoardNeighbors }
 })();
 
 const displayManager = (() => {
     let boardDisplay = document.querySelector("board-display");
-    let renderBoard = (boardArray) => {
-        boardArray.forEach(cell => {
-            
+    let displayBoard = () => {
+        gameBoard.boardArray.forEach(cell => {
+            let displayCell = document.createElement('div');
+            displayCell.addEventListener('click', () => {
+
+            });
+            boardDisplay.appendChild(displayCell);
         });
     }
+
+    const markCell = () => {
+
+    }
+
 })();
 
-const logicManager = (() => {
+const turnManager = (() => {
+    let playerOneTurn = false;
+
+    const getPlayerTurn = () => {
+        return playerOneTurn;
+    }
+
+    return { getPlayerTurn }
 
 })();
 
@@ -76,3 +102,7 @@ const boardCell = (boardIndex) => {
 
     return { boardIndex, getCellCol, getCellRow }
 } 
+
+const gameManager = (() => {
+
+})();
