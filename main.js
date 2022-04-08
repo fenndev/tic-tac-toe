@@ -1,10 +1,9 @@
 // Player
 
 const Player = (name) => {
-    let turnPos;
     let symbol = "";
     let wins = 0;
-    return { name, symbol, wins, turnPos };
+    return { name, symbol, wins };
 };
 
 // Display Manager
@@ -26,7 +25,7 @@ const GameManager = (() => {
     const playerOne = Player("Bob");
     const playerTwo = Player("Jeremy");
     let currentPlayer;
-    let gameRunning = true;
+    let gameRunning = false;
 
     const playGame = () => {
         setTurns();
@@ -38,16 +37,12 @@ const GameManager = (() => {
         switch(randomNum) {
             case 0:
                 playerOne.symbol = "X";
-                playerOne.turnPos = 0;
                 playerTwo.symbol = "O";
-                playerTwo.turnPos = 1;
             default:
                 playerOne.symbol = "O";
-                playerOne.turnPos = 1;
                 playerTwo.symbol = "X";
-                playerTwo.turnPos = 0;
         }
-        currentPlayer = (playerOne.turnPos == 0 ? playerOne : playerTwo);
+        currentPlayer = (randomNum == 0 ? playerOne : playerTwo);
     }
 
     const makeCellsClickable = () => {
@@ -67,4 +62,4 @@ const GameManager = (() => {
     return { playGame };
 })();
 
-GameManager.setTurns();
+GameManager.playGame();
