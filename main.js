@@ -2,8 +2,9 @@
 
 const Player = (name) => {
     let symbol = "";
+    let currentTurn = 1;
     let wins = 0;
-    return { name, symbol, wins };
+    return { name, symbol, currentTurn, wins };
 };
 
 // Display Manager
@@ -20,7 +21,13 @@ const DisplayManager = (() => {
         return gridCells;
     }
 
-    return { getGridCells, updateCellDisplay };
+    const getGridSection = (nameOfSection, numOfSection) => {
+        let tempGrid = Array.from(gridCells);
+        let section = tempGrid.filter(cell => cell.getAttribute(`data-${nameOfSection}`) == numOfSection);
+        return section;
+    }
+
+    return { getGridCells, updateCellDisplay, getGridSection };
 })();
 
 // Game Manager
@@ -67,8 +74,30 @@ const GameManager = (() => {
     const markCell = (cell, currentPlayer) => {
         if(gameRunning && cell.textContent == "*") {
             DisplayManager.updateCellDisplay(cell, currentPlayer);
-            turnShift();
+            if(currentPlayer.currentTurn >= 3) {
+                checkForWin(cell);
+            }
+            else
+                turnShift();
+            currentPlayer.currentTurn++;
         }   
+    }
+
+    const checkForWin = (cell) => {
+        let cellPos = [cell.getAttribute('data-col'), cell.getAttribute('data-row')];
+        let colNeighbors = getColNeighbors(cellPos[0], cellPos[1]);
+        let rowNeighbors = getRowNeighbors(cellPos[1], cellPos[0]);
+        console.log(colNeighbors);
+        console.log(rowNeighbors);
+        turnShift();
+    }
+
+    const getColNeighbors = (columnNum, rowNum) => {
+        return Array.from(DisplayManager.getGridCells()).filter(cell => cell.getAttribute('data-col') == columnNum && cell.getAttribute('data-row') != rowNum);
+    }
+
+    const getRowNeighbors = (rowNum, columnNum) => {
+        return Array.from(DisplayManager.getGridCells()).filter(cell => cell.getAttribute('data-row') == rowNum && cell.getAttribute('data-col') != columnNum);
     }
 
     return { playGame };
