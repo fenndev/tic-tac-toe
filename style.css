@@ -17,4 +17,37 @@ body {
 .container {
     height: 100%;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Tic Tac Toe Grid */
+
+.grid {
+    margin: 5rem;
+    width: 75rem;
+    height: 75rem;
+    display: grid;
+    grid-template: repeat(3, minmax(250px, 1fr)) / repeat(3, minmax(250px, 1fr));
+    place-items: center;
+}
+
+.grid__cell {
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+}
+
+.grid__cell[data-row="1"] {
+    border-top: 1px solid black;
+}
+
+.grid__cell[data-col="1"] {
+    border-left: 1px solid black;
 }
