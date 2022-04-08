@@ -31,7 +31,6 @@ const GameManager = (() => {
 
     const setTurns = () => {
         let randomNum = Math.floor(Math.random() * 2);
-        console.log(randomNum);
         switch(randomNum) {
             case 0:
                 playerOne.symbol = "X";
@@ -45,7 +44,6 @@ const GameManager = (() => {
                 playerTwo.turnPos = 0;
         }
         currentPlayer = (playerOne.turnPos == 0 ? playerOne : playerTwo);
-        console.log(currentPlayer);
     }
     
     DisplayManager.gridCells.forEach(cell => {
