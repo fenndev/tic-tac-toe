@@ -12,7 +12,6 @@ const Player = (name) => {
 const DisplayManager = (() => {
     let grid = document.querySelector(".grid");
     const gridCells = grid.querySelectorAll(".grid__cell");
-    console.log(gridCells);
 
     const updateCellDisplay = (cellToUpdate, currentPlayer) => {
         cellToUpdate.textContent = currentPlayer.symbol;
@@ -28,6 +27,11 @@ const GameManager = (() => {
     const playerTwo = Player("Jeremy");
     let currentPlayer;
     let gameRunning = true;
+
+    const playGame = () => {
+        setTurns();
+        makeCellsClickable();
+    }
 
     const setTurns = () => {
         let randomNum = Math.floor(Math.random() * 2);
@@ -45,12 +49,14 @@ const GameManager = (() => {
         }
         currentPlayer = (playerOne.turnPos == 0 ? playerOne : playerTwo);
     }
-    
-    DisplayManager.gridCells.forEach(cell => {
-        cell.addEventListener('click', () => {
-            markCell(cell, currentPlayer);
+
+    const makeCellsClickable = () => {
+        DisplayManager.gridCells.forEach(cell => {
+            cell.addEventListener('click', () => {
+                markCell(cell, currentPlayer);
+            });
         });
-    });
+    }
 
     const markCell = (cell, currentPlayer) => {
         if(gameRunning) {
@@ -58,7 +64,7 @@ const GameManager = (() => {
         }   
     }
 
-    return { playerOne, playerTwo, markCell, setTurns };
+    return { playGame };
 })();
 
 GameManager.setTurns();
