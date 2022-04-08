@@ -16,7 +16,11 @@ const DisplayManager = (() => {
         cellToUpdate.textContent = currentPlayer.symbol;
     }
 
-    return { grid, gridCells, updateCellDisplay };
+    const getGridCells = () => {
+        return gridCells;
+    }
+
+    return { getGridCells, updateCellDisplay };
 })();
 
 // Game Manager
@@ -25,7 +29,7 @@ const GameManager = (() => {
     const playerOne = Player("Bob");
     const playerTwo = Player("Jeremy");
     let currentPlayer;
-    let gameRunning = false;
+    let gameRunning = true;
 
     const playGame = () => {
         setTurns();
@@ -45,8 +49,15 @@ const GameManager = (() => {
         currentPlayer = (randomNum == 0 ? playerOne : playerTwo);
     }
 
+    const turnShift = () => {
+        if(currentPlayer == playerOne)
+            currentPlayer = playerTwo;
+        else
+            currentPlayer = playerOne;
+    }
+
     const makeCellsClickable = () => {
-        DisplayManager.gridCells.forEach(cell => {
+        DisplayManager.getGridCells().forEach(cell => {
             cell.addEventListener('click', () => {
                 markCell(cell, currentPlayer);
             });
@@ -54,8 +65,9 @@ const GameManager = (() => {
     }
 
     const markCell = (cell, currentPlayer) => {
-        if(gameRunning) {
+        if(gameRunning && cell.textContent == "*") {
             DisplayManager.updateCellDisplay(cell, currentPlayer);
+            turnShift();
         }   
     }
 
