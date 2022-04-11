@@ -112,8 +112,6 @@ const GameManager = (() => {
     }
 
     const getNeighbors = (cell) => {
-        let colNum = cell.getAttribute('data-col');
-        let rowNum = cell.getAttribute('data-row');
         let neighborArray = [];
         neighborArray.push(getColNeighbors(cell));
         neighborArray.push(getRowNeighbors(cell));
