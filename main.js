@@ -84,11 +84,7 @@ const GameManager = (() => {
     }
 
     const checkForWin = (cell) => {
-        let cellPos = [cell.getAttribute('data-col'), cell.getAttribute('data-row')];
-        let colNeighbors = getColNeighbors(cellPos[0], cellPos[1]);
-        let rowNeighbors = getRowNeighbors(cellPos[1], cellPos[0]);
-        console.log(colNeighbors);
-        console.log(rowNeighbors);
+        console.log(getNeighbors(cell));
         turnShift();
     }
 
@@ -98,6 +94,26 @@ const GameManager = (() => {
 
     const getRowNeighbors = (rowNum, columnNum) => {
         return Array.from(DisplayManager.getGridCells()).filter(cell => cell.getAttribute('data-row') == rowNum && cell.getAttribute('data-col') != columnNum);
+    }
+
+    const getDiagNeighbors = (diagCell) => {
+        if('diag' in diagCell.dataset == false) {
+            return null;
+        }
+        else if(diagCell.dataset.diag == "center") {
+            let neighborGroupOne = Array.from(DisplayManager.getGridCells()).filter(cell => cell.getAttribute('data-diag') == 1);
+            let neighborGroupTwo = Array.from(DisplayManager.getGridCells()).filter(cell => cell.getAttribute('data-diag') == 2);
+            return [neighborGroupOne, neighborGroupTwo];
+        }
+        else {
+            return Array.from(DisplayManager.getGridCells()).filter(cell => (cell.getAttribute('data-diag') == diagCell.getAttribute('data-diag') && cell.getAttribute('data-col') != diagCell.getAttribute('data-col')) || (cell.getAttribute('data-diag') == 'center'));
+        }
+    }
+
+    const getNeighbors = (cell) => {
+        let colNum = cell.getAttribute('data-col');
+        let rowNum = cell.getAttribute('data-row');
+        return [getColNeighbors(colNum, rowNum), getRowNeighbors(colNum, rowNum), getDiagNeighbors(cell)];
     }
 
     return { playGame };
