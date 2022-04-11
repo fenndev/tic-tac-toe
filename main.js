@@ -88,34 +88,39 @@ const GameManager = (() => {
         turnShift();
     }
 
-    const getColNeighbors = (columnNum, rowNum) => {
+    const getColNeighbors = (cell) => {
+        let columnNum = cell.getAttribute('data-col');
+        let rowNum = cell.getAttribute('data-row');
         return Array.from(DisplayManager.getGridCells()).filter(cell => cell.getAttribute('data-col') == columnNum && cell.getAttribute('data-row') != rowNum);
     }
 
-    const getRowNeighbors = (rowNum, columnNum) => {
+    const getRowNeighbors = (cell) => {
+        let columnNum = cell.getAttribute('data-col');
+        let rowNum = cell.getAttribute('data-row');
         return Array.from(DisplayManager.getGridCells()).filter(cell => cell.getAttribute('data-row') == rowNum && cell.getAttribute('data-col') != columnNum);
     }
 
-    const getDiagNeighbors = (diagCell) => {
-        if('diag' in diagCell.dataset == false) {
-            return null;
-        }
-        else if(diagCell.dataset.diag == "center") {
+    const getDiagNeighbors = (cell) => {
+        if(cell.dataset.diag == "center") {
             let neighborGroupOne = Array.from(DisplayManager.getGridCells()).filter(cell => cell.getAttribute('data-diag') == 1);
             let neighborGroupTwo = Array.from(DisplayManager.getGridCells()).filter(cell => cell.getAttribute('data-diag') == 2);
             return [neighborGroupOne, neighborGroupTwo];
         }
         else {
-            return Array.from(DisplayManager.getGridCells()).filter(cell => (cell.getAttribute('data-diag') == diagCell.getAttribute('data-diag') && cell.getAttribute('data-col') != diagCell.getAttribute('data-col')) || (cell.getAttribute('data-diag') == 'center'));
+            return Array.from(DisplayManager.getGridCells()).filter(cell => (cell.getAttribute('data-diag') == cell.getAttribute('data-diag') && cell.getAttribute('data-col') != diagCell.getAttribute('data-col')) || (cell.getAttribute('data-diag') == 'center'));
         }
     }
 
     const getNeighbors = (cell) => {
         let colNum = cell.getAttribute('data-col');
         let rowNum = cell.getAttribute('data-row');
-        return [getColNeighbors(colNum, rowNum), getRowNeighbors(colNum, rowNum), getDiagNeighbors(cell)];
+        let neighborArray = [];
+        neighborArray.push(getColNeighbors(cell));
+        neighborArray.push(getRowNeighbors(cell));
+        if('diag' in cell.dataset)
+            neighborArray.push(getDiagNeighbors(cell));
+        return neighborArray;
     }
-
     return { playGame };
 })();
 
