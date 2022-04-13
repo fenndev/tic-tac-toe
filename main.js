@@ -7,6 +7,56 @@ const Player = (name) => {
     return { name, symbol, currentTurn, wins };
 };
 
+// Results Manager
+
+const ResultsManager = (() => {
+    let horizontalResults = [];
+    let verticalResults = [];
+    let diagResultsOne = [];
+    let diagResultsTwo = [];
+
+    const addHorizontalResults = (resultsToAdd) => {
+        horizontalResults = resultsToAdd;
+    }
+
+    const addVerticalResults = (resultsToAdd) => {
+        verticalResults = resultsToAdd;
+    }
+
+    const addDiagResults = (resultsToAdd, resultArrayNum) => {
+        if(resultArrayNum == 1)
+            diagResultsOne.push(resultsToAdd);
+        else if(resultArrayNum == 2)
+            diagResultsTwo.push(resultsToAdd);
+        else
+            console.error("No valid array number added.");
+    }
+
+    const getHorizontalResults = () => {
+        return horizontalResults;
+    }
+
+    const getVerticalResults = () => {
+        return verticalResults;
+    }
+
+    const getDiagResults = (resultArrayNum) => {
+        if(resultArrayNum == 1)
+            return diagResultsOne;
+        else if(resultArrayNum == 2)
+            return diagResultsTwo;
+    }
+
+    return { addHorizontalResults, addVerticalResults, addDiagResults, getHorizontalResults, getVerticalResults, getDiagResults }
+})();
+
+// Array Manager
+
+const ArrayManager = (() => {
+    let horizontalArray = [];
+    let verticalArray = [];
+})();
+
 // Display Manager
 
 const DisplayManager = (() => {
@@ -84,7 +134,12 @@ const GameManager = (() => {
     }
 
     const checkForWin = (cell) => {
-        console.log(getNeighbors(cell));
+        let arrayToCheck = getNeighbors(cell);
+        console.log(arrayToCheck);
+        let playerHasWon = checkArrays(arrayToCheck);
+        if(playerHasWon)
+            console.log(`Congratulations, ${currentPlayer}! You won!`);
+        
         turnShift();
     }
 
@@ -102,12 +157,17 @@ const GameManager = (() => {
 
     const getDiagNeighbors = (cell) => {
         if(cell.dataset.diag == "center") {
+            console.log(cell.dataset.diag)  
             let neighborGroupOne = Array.from(DisplayManager.getGridCells()).filter(cell => cell.getAttribute('data-diag') == 1);
             let neighborGroupTwo = Array.from(DisplayManager.getGridCells()).filter(cell => cell.getAttribute('data-diag') == 2);
             return [neighborGroupOne, neighborGroupTwo];
         }
         else {
-            return Array.from(DisplayManager.getGridCells()).filter(cell => (cell.getAttribute('data-diag') == cell.getAttribute('data-diag') && cell.getAttribute('data-col') != diagCell.getAttribute('data-col')) || (cell.getAttribute('data-diag') == 'center'));
+            let tempArray = [];
+            tempArray.push(Array.from(DisplayManager.getGridCells()).filter(gridCell => gridCell.getAttribute('data-diag') == 'center'));
+            tempArray.push(Array.from(DisplayManager.getGridCells()).filter(gridCell => cell.getAttribute('data-diag') == gridCell.getAttribute('data-diag') && cell.getAttribute('data-col') != gridCell.getAttribute('data-col')));
+            console.log(tempArray);
+            return tempArray;
         }
     }
 
@@ -115,9 +175,37 @@ const GameManager = (() => {
         let neighborArray = [];
         neighborArray.push(getColNeighbors(cell));
         neighborArray.push(getRowNeighbors(cell));
-        if('diag' in cell.dataset)
+        if('diag' in cell.dataset) {
             neighborArray.push(getDiagNeighbors(cell));
+        }
         return neighborArray;
+    }
+
+    const checkArrays = (array) => {
+        if(array.length == 3) {
+            ResultsManager.addHorizontalResults(array[0].every(checkCell));
+            ResultsManager.addVerticalResults(array[1].every(checkCell));
+            ResultsManager.addDiagResults(array[2][0].every(checkCell), 1);
+            ResultsManager.addDiagResults(array[2][1].every(checkCell), 2);
+            console.log(ResultsManager.getHorizontalResults());
+            console.log(ResultsManager.getVerticalResults());
+            console.log(ResultsManager.getDiagResults(1));
+            console.log(ResultsManager.getDiagResults(2));
+        }
+        else {
+            array.forEach(cell => {
+                ResultsManager.addHorizontalResults(array[0].every(checkCell));
+                ResultsManager.addVerticalResults(array[1].every(checkCell));
+            });
+        }
+    }
+
+    const checkCell = (cell) => {
+        console.log(cell);
+        if(cell.textContent == currentPlayer.symbol)
+            return true;
+        else
+            return false;
     }
     return { playGame };
 })();
