@@ -44,8 +44,9 @@ const GameManager = (() => {
     const markCell = (cell, currentPlayer) => {
         if(gameRunning && cell.textContent == "*") {
             DOMManager.updateCellDisplay(cell, currentPlayer);
-            checkForWin();
-            turnShift();
+            if(checkForWin())
+                console.log(`Congratulations, ${currentPlayer.name}! You win!`);
+            else turnShift();
         }
     }
 
