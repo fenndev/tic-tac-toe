@@ -57,7 +57,7 @@ const GameManager = (() => {
     }
 
     const makeCellsClickable = () => {
-        DisplayManager.getGridCells().forEach(cell => {
+        DOMManager.getGridCells().forEach(cell => {
             cell.addEventListener('click', () => {
                 markCell(cell, currentPlayer);
             });
@@ -66,7 +66,7 @@ const GameManager = (() => {
 
     const markCell = (cell, currentPlayer) => {
         if(gameRunning && cell.textContent == "*") {
-            DisplayManager.updateCellDisplay(cell, currentPlayer);
+            DOMManager.updateCellDisplay(cell, currentPlayer);
             currentPlayer.currentTurn++;
         }   
     }
