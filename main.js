@@ -47,6 +47,20 @@ const GameManager = (() => {
             turnShift();
         }
     }
+
+    const checkForWin = () => {
+        let gridArray = Array.from(DOMManager.getGridCells());
+    }
+
+    const getGridSection = (grid, sectionType, sectionNum) => {
+        if(sectionType != 'diag') {return grid.filter(cell => cell.getAttribute(`data-${sectionType}`) == sectionNum)}
+        else {return grid.filter(cell => cell.getAttribute(`data-${sectionType}`) == sectionNum) || cell.getAttribute(`data-${sectionType}`) == 'center'};
+    }
+    
+    const doesSymbolMatch = (symbol) => {
+        if(symbol == currentPlayer.symbol) return true;
+    }
+
     return { playGame };
 })();
 GameManager.playGame();
