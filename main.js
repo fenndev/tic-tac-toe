@@ -24,10 +24,15 @@ const ResultsManager = (() => {
     }
 
     const addDiagResults = (resultsToAdd, resultArrayNum) => {
-        if(resultArrayNum == 1)
-            diagResultsOne.push(resultsToAdd);
-        else if(resultArrayNum == 2)
-            diagResultsTwo.push(resultsToAdd);
+        console.log(resultArrayNum);
+        if(resultArrayNum === 1) {
+            console.log(resultsToAdd);
+            diagResultsOne = resultsToAdd;
+        }
+        else if(resultArrayNum === 2) {
+            console.log(resultsToAdd);
+            diagResultsTwo = resultsToAdd;
+        }
         else
             console.error("No valid array number added.");
     }
@@ -124,11 +129,7 @@ const GameManager = (() => {
     const markCell = (cell, currentPlayer) => {
         if(gameRunning && cell.textContent == "*") {
             DisplayManager.updateCellDisplay(cell, currentPlayer);
-            if(currentPlayer.currentTurn >= 3) {
-                checkForWin(cell);
-            }
-            else
-                turnShift();
+            checkForWin(cell);
             currentPlayer.currentTurn++;
         }   
     }
@@ -158,15 +159,14 @@ const GameManager = (() => {
     const getDiagNeighbors = (cell) => {
         if(cell.dataset.diag == "center") {
             console.log(cell.dataset.diag)  
-            let neighborGroupOne = Array.from(DisplayManager.getGridCells()).filter(cell => cell.getAttribute('data-diag') == 1);
-            let neighborGroupTwo = Array.from(DisplayManager.getGridCells()).filter(cell => cell.getAttribute('data-diag') == 2);
-            return [neighborGroupOne, neighborGroupTwo];
+            let tempArray = [];
+            tempArray = Array.from(DisplayManager.getGridCells()).filter(cell => cell.getAttribute('data-diag') == 1 || cell.getAttribute('data-diag') == 2);
+            return tempArray;
         }
         else {
             let tempArray = [];
             tempArray.push(Array.from(DisplayManager.getGridCells()).filter(gridCell => gridCell.getAttribute('data-diag') == 'center'));
             tempArray.push(Array.from(DisplayManager.getGridCells()).filter(gridCell => cell.getAttribute('data-diag') == gridCell.getAttribute('data-diag') && cell.getAttribute('data-col') != gridCell.getAttribute('data-col')));
-            console.log(tempArray);
             return tempArray;
         }
     }
@@ -182,21 +182,27 @@ const GameManager = (() => {
     }
 
     const checkArrays = (array) => {
+        console.log(array.length)
         if(array.length == 3) {
             ResultsManager.addHorizontalResults(array[0].every(checkCell));
             ResultsManager.addVerticalResults(array[1].every(checkCell));
             ResultsManager.addDiagResults(array[2][0].every(checkCell), 1);
-            ResultsManager.addDiagResults(array[2][1].every(checkCell), 2);
+            console.log(array[2])
+            if(array[2].length === 2) {
+                ResultsManager.addDiagResults(array[2][1].every(checkCell), 2);
+            }
+            
+            
             console.log(ResultsManager.getHorizontalResults());
             console.log(ResultsManager.getVerticalResults());
             console.log(ResultsManager.getDiagResults(1));
             console.log(ResultsManager.getDiagResults(2));
         }
         else {
-            array.forEach(cell => {
-                ResultsManager.addHorizontalResults(array[0].every(checkCell));
-                ResultsManager.addVerticalResults(array[1].every(checkCell));
-            });
+            ResultsManager.addHorizontalResults(array[1].every(checkCell));
+            ResultsManager.addVerticalResults(array[0].every(checkCell));
+            console.log(ResultsManager.getHorizontalResults());
+            console.log(ResultsManager.getVerticalResults());
         }
     }
 
