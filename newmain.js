@@ -74,4 +74,4 @@ const GameManager = (() => {
     return { playGame };
 })();
 
-GameManager.playGame();
+GameManager.playGame(); 
