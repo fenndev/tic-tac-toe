@@ -44,12 +44,32 @@ const GameManager = (() => {
     const markCell = (cell, currentPlayer) => {
         if(gameRunning && cell.textContent == "*") {
             DOMManager.updateCellDisplay(cell, currentPlayer);
+            checkForWin();
             turnShift();
         }
     }
 
     const checkForWin = () => {
         let gridArray = Array.from(DOMManager.getGridCells());
+        let rowOne = getGridSection(gridArray, 'row', 1);
+        let rowTwo = getGridSection(gridArray, 'row', 2);
+        let rowThree = getGridSection(gridArray, 'row', 3);
+        let colOne = getGridSection(gridArray, 'col', 1);
+        let colTwo = getGridSection(gridArray, 'col', 2);
+        let colThree = getGridSection(gridArray, 'col', 3);
+        let diagOne = getGridSection(gridArray, 'diag', 1);
+        let diagTwo = getGridSection(gridArray, 'diag', 2);
+
+        let hasWon = false;
+        if(rowOne.every(cell => doesSymbolMatch(cell.textContent))) hasWon = true;
+        else if(rowTwo.every(cell => doesSymbolMatch(cell.textContent))) hasWon = true;
+        else if(rowThree.every(cell => doesSymbolMatch(cell.textContent))) hasWon = true;
+        else if(colOne.every(cell => doesSymbolMatch(cell.textContent))) hasWon = true;
+        else if(colTwo.every(cell => doesSymbolMatch(cell.textContent))) hasWon = true;
+        else if(colThree.every(cell => doesSymbolMatch(cell.textContent))) hasWon = true;
+        else if(diagOne.every(cell => doesSymbolMatch(cell.textContent))) hasWon = true;
+        else if(diagTwo.every(cell => doesSymbolMatch(cell.textContent))) hasWon = true;
+        return hasWon;
     }
 
     const getGridSection = (grid, sectionType, sectionNum) => {
