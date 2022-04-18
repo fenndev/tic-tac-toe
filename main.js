@@ -67,7 +67,7 @@ const GameManager = (() => {
     const markCell = (cell, currentPlayer) => {
         if(gameRunning && cell.textContent == "*") {
             DOMManager.updateCellDisplay(cell, currentPlayer);
-            currentPlayer.currentTurn++;
+            turnShift();
         }   
     }
 
