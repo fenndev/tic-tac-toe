@@ -59,22 +59,25 @@ const GameManager = (() => {
         let colThree = getGridSection(gridArray, 'col', 3);
         let diagOne = getGridSection(gridArray, 'diag', 1);
         let diagTwo = getGridSection(gridArray, 'diag', 2);
-
-        let hasWon = false;
-        if(rowOne.every(cell => doesSymbolMatch(cell.textContent))) hasWon = true;
-        else if(rowTwo.every(cell => doesSymbolMatch(cell.textContent))) hasWon = true;
-        else if(rowThree.every(cell => doesSymbolMatch(cell.textContent))) hasWon = true;
-        else if(colOne.every(cell => doesSymbolMatch(cell.textContent))) hasWon = true;
-        else if(colTwo.every(cell => doesSymbolMatch(cell.textContent))) hasWon = true;
-        else if(colThree.every(cell => doesSymbolMatch(cell.textContent))) hasWon = true;
-        else if(diagOne.every(cell => doesSymbolMatch(cell.textContent))) hasWon = true;
-        else if(diagTwo.every(cell => doesSymbolMatch(cell.textContent))) hasWon = true;
-        return hasWon;
+        
+        if(checkGridSection(rowOne)) return true;
+        else if(checkGridSection(rowTwo)) return true;
+        else if(checkGridSection(rowThree)) return true;
+        else if(checkGridSection(colOne)) return true;
+        else if(checkGridSection(colTwo)) return true;
+        else if(checkGridSection(colThree)) return true;
+        else if(checkGridSection(diagOne)) return true;
+        else if(checkGridSection(diagTwo)) return true;
+        else return false;
     }
 
     const getGridSection = (grid, sectionType, sectionNum) => {
         if(sectionType != 'diag') {return grid.filter(cell => cell.getAttribute(`data-${sectionType}`) == sectionNum)}
         else {return grid.filter(cell => cell.getAttribute(`data-${sectionType}`) == sectionNum) || cell.getAttribute(`data-${sectionType}`) == 'center'};
+    }
+
+    const checkGridSection = (sectionToCheck) => {
+        if(sectionToCheck.every(cell => doesSymbolMatch(cell.textContent))) return true;
     }
     
     const doesSymbolMatch = (symbol) => {
