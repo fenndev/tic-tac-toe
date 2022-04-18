@@ -70,6 +70,8 @@ const GameManager = (() => {
             currentPlayer.currentTurn++;
         }   
     }
-    
+
     return { playGame };
 })();
+
+GameManager.playGame();
