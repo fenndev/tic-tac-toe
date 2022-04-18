@@ -39,12 +39,7 @@ const GameManager = (() => {
         }
         currentPlayer = (randomNum == 0 ? playerOne : playerTwo);
     }
-    const turnShift = () => {
-        if(currentPlayer == playerOne)
-            currentPlayer = playerTwo;
-        else
-            currentPlayer = playerOne;
-    }
+    const turnShift = () => currentPlayer == playerOne ? currentPlayer = playerTwo : currentPlayer = playerOne;
     const makeCellsClickable = () => {
         DOMManager.getGridCells().forEach(cell => cell.addEventListener('click', () => markCell(cell, currentPlayer)));
     }
@@ -52,8 +47,8 @@ const GameManager = (() => {
         if(gameRunning && cell.textContent == "*") {
             DOMManager.updateCellDisplay(cell, currentPlayer);
             turnShift();
-        }   
+        }
     }
     return { playGame };
 })();
-GameManager.playGame(); 
+GameManager.playGame();
