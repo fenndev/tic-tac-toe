@@ -40,9 +40,7 @@ const GameManager = (() => {
         currentPlayer = (randomNum == 0 ? playerOne : playerTwo);
     }
     const turnShift = () => currentPlayer == playerOne ? currentPlayer = playerTwo : currentPlayer = playerOne;
-    const makeCellsClickable = () => {
-        DOMManager.getGridCells().forEach(cell => cell.addEventListener('click', () => markCell(cell, currentPlayer)));
-    }
+    const makeCellsClickable = () => DOMManager.getGridCells().forEach(cell => cell.addEventListener('click', () => markCell(cell, currentPlayer)));
     const markCell = (cell, currentPlayer) => {
         if(gameRunning && cell.textContent == "*") {
             DOMManager.updateCellDisplay(cell, currentPlayer);
