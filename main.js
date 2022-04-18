@@ -11,15 +11,8 @@ const Player = (name) => {
 const DOMManager = (() => {
     let grid = document.querySelector(".grid");
     const gridCells = grid.querySelectorAll(".grid__cell");
-
-    const updateCellDisplay = (cellToUpdate, currentPlayer) => {
-        cellToUpdate.textContent = currentPlayer.symbol;
-    }
-
-    const getGridCells = () => {
-        return gridCells;
-    }
-
+    const updateCellDisplay = (cellToUpdate, currentPlayer) => cellToUpdate.textContent = currentPlayer.symbol;
+    const getGridCells = () => gridCells;
     return { getGridCells, updateCellDisplay };
 })();
 
@@ -30,12 +23,10 @@ const GameManager = (() => {
     const playerTwo = Player("Jeremy");
     let currentPlayer;
     let gameRunning = true;
-
     const playGame = () => {
         setTurns();
         makeCellsClickable();
     }
-
     const setTurns = () => {
         let randomNum = Math.floor(Math.random() * 2);
         switch(randomNum) {
@@ -48,30 +39,21 @@ const GameManager = (() => {
         }
         currentPlayer = (randomNum == 0 ? playerOne : playerTwo);
     }
-
     const turnShift = () => {
         if(currentPlayer == playerOne)
             currentPlayer = playerTwo;
         else
             currentPlayer = playerOne;
     }
-
     const makeCellsClickable = () => {
-        DOMManager.getGridCells().forEach(cell => {
-            cell.addEventListener('click', () => {
-                markCell(cell, currentPlayer);
-            });
-        });
+        DOMManager.getGridCells().forEach(cell => cell.addEventListener('click', () => markCell(cell, currentPlayer)));
     }
-
     const markCell = (cell, currentPlayer) => {
         if(gameRunning && cell.textContent == "*") {
             DOMManager.updateCellDisplay(cell, currentPlayer);
             turnShift();
         }   
     }
-
     return { playGame };
 })();
-
 GameManager.playGame(); 
