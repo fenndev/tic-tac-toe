@@ -14,6 +14,8 @@ const DOMManager = (() => {
     const modalForm = document.querySelector(".modal__prompt");
     const modal = document.querySelector(".modal");
     const currentPlayerDisplay = document.querySelector(".current-player");
+    const playerOneNameInput = document.querySelector("#player-one");
+    const playerTwoNameInput = document.querySelector("#player-two");
     let grid = document.querySelector(".grid");
     const gridCells = grid.querySelectorAll(".grid__cell");
     const updateCellDisplay = (cellToUpdate, currentPlayer) => cellToUpdate.textContent = currentPlayer.symbol;
@@ -33,22 +35,24 @@ const DOMManager = (() => {
 
     const updateCurrentPlayerDisplay = (currentPlayer) => currentPlayerDisplay.textContent = `${currentPlayer.name}'s Turn!`;
 
+    const getPlayerOne = () => playerOneNameInput.value;
+    const getPlayerTwo = () => playerTwoNameInput.value;
 
 
-    return { getGridCells, updateCellDisplay, getStartButton, getSubmitButton, showModalForm, hideModal, getModalForm, updateCurrentPlayerDisplay };
+
+    return { getGridCells, updateCellDisplay, getStartButton, getSubmitButton, showModalForm, hideModal, getModalForm, updateCurrentPlayerDisplay, getPlayerOne, getPlayerTwo };
 })();
 
 // Game Manager
 
 const GameManager = (() => {
-    const playerOne = Player("Bob");
-    const playerTwo = Player("Jeremy");
+    let playerOne;
+    let playerTwo;
     let currentPlayer;
     let gameRunning = true;
     const playGame = () => {
         readyStartButton();
         readyForm();
-        setTurns();
         makeCellsClickable();
     }
     const setTurns = () => {
@@ -64,7 +68,10 @@ const GameManager = (() => {
         currentPlayer = (randomNum == 0 ? playerOne : playerTwo);
         DOMManager.updateCurrentPlayerDisplay(currentPlayer);
     }
-    const turnShift = () => currentPlayer == playerOne ? currentPlayer = playerTwo : currentPlayer = playerOne;
+    const turnShift = () => {
+        currentPlayer == playerOne ? currentPlayer = playerTwo : currentPlayer = playerOne;
+        DOMManager.updateCurrentPlayerDisplay(currentPlayer);
+    }
     const makeCellsClickable = () => DOMManager.getGridCells().forEach(cell => cell.addEventListener('click', () => markCell(cell, currentPlayer)));
     const markCell = (cell, currentPlayer) => {
         if(gameRunning && cell.textContent == "*") {
@@ -78,6 +85,9 @@ const GameManager = (() => {
     const readyStartButton = () => DOMManager.getStartButton().addEventListener('click', () => { DOMManager.showModalForm(); })
     const readyForm = () => DOMManager.getModalForm().addEventListener('submit', (event) => {
         event.preventDefault();
+        playerOne = Player(DOMManager.getPlayerOne());
+        playerTwo = Player(DOMManager.getPlayerTwo());
+        setTurns();
         DOMManager.hideModal();
         })
 
