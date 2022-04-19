@@ -9,11 +9,29 @@ const Player = (name) => {
 // DOM Manager
 
 const DOMManager = (() => {
+    const startButton = document.querySelector(".start-btn");
+    const modalSubmitButton = document.querySelector(".submit-btn");
+    const modalPrompt = document.querySelector(".modal__prompt");
+    const modal = document.querySelector(".modal");
     let grid = document.querySelector(".grid");
     const gridCells = grid.querySelectorAll(".grid__cell");
     const updateCellDisplay = (cellToUpdate, currentPlayer) => cellToUpdate.textContent = currentPlayer.symbol;
     const getGridCells = () => gridCells;
-    return { getGridCells, updateCellDisplay };
+    const getStartButton = () => startButton;
+    const getSubmitButton = () => modalSubmitButton;
+
+    const showModalForm = () => {
+        startButton.style.display = "none";
+        modalPrompt.style.display = "flex";
+    }
+
+    const hideModal = () => {
+        modal.style.display = "none";
+    }
+
+
+
+    return { getGridCells, updateCellDisplay, getStartButton, getSubmitButton, showModalForm, hideModal };
 })();
 
 // Game Manager
@@ -24,6 +42,8 @@ const GameManager = (() => {
     let currentPlayer;
     let gameRunning = true;
     const playGame = () => {
+        readyStartButton();
+        readySubmitButton();
         setTurns();
         makeCellsClickable();
     }
@@ -49,6 +69,12 @@ const GameManager = (() => {
             else turnShift();
         }
     }
+
+    const readyStartButton = () => DOMManager.getStartButton().addEventListener('click', () => { DOMManager.showModalForm(); })
+    const readySubmitButton = () => DOMManager.getSubmitButton().addEventListener('click', (event) => {
+        event.preventDefault();
+        DOMManager.hideModal();
+        })
 
     const checkForWin = () => {
         let gridArray = Array.from(DOMManager.getGridCells());
