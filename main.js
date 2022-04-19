@@ -52,24 +52,27 @@ const GameManager = (() => {
 
     const checkForWin = () => {
         let gridArray = Array.from(DOMManager.getGridCells());
-        let rowOne = getGridSection(gridArray, 'row', 1);
-        let rowTwo = getGridSection(gridArray, 'row', 2);
-        let rowThree = getGridSection(gridArray, 'row', 3);
-        let colOne = getGridSection(gridArray, 'col', 1);
-        let colTwo = getGridSection(gridArray, 'col', 2);
-        let colThree = getGridSection(gridArray, 'col', 3);
-        let diagOne = getGridSection(gridArray, 'diag', 1);
-        let diagTwo = getGridSection(gridArray, 'diag', 2);
         
-        if(checkGridSection(rowOne)) return true;
-        else if(checkGridSection(rowTwo)) return true;
-        else if(checkGridSection(rowThree)) return true;
-        else if(checkGridSection(colOne)) return true;
-        else if(checkGridSection(colTwo)) return true;
-        else if(checkGridSection(colThree)) return true;
-        else if(checkGridSection(diagOne)) return true;
-        else if(checkGridSection(diagTwo)) return true;
-        else return false;
+        const sectionArray = {
+            rowOne : getGridSection(gridArray, 'row', 1),
+            rowTwo : getGridSection(gridArray, 'row', 2),
+            rowThree : getGridSection(gridArray, 'row', 3),
+            colOne : getGridSection(gridArray, 'col', 1),
+            colTwo : getGridSection(gridArray, 'col', 2),
+            colThree : getGridSection(gridArray, 'col', 3),
+            diagOne : getGridSection(gridArray, 'diag', 1),
+            diagTwo : getGridSection(gridArray, 'diag', 2)
+        };
+
+        let tempResult = false;
+        for (let section in sectionArray) {
+            console.log(tempResult);
+            if(checkGridSection(sectionArray[section])) {
+                tempResult = true;
+                break;
+            }
+        }
+        return tempResult;
     }
 
     const getGridSection = (grid, sectionType, sectionNum) => {
@@ -77,13 +80,9 @@ const GameManager = (() => {
         else {return grid.filter(cell => cell.getAttribute(`data-${sectionType}`) == sectionNum) || cell.getAttribute(`data-${sectionType}`) == 'center'};
     }
 
-    const checkGridSection = (sectionToCheck) => {
-        if(sectionToCheck.every(cell => doesSymbolMatch(cell.textContent))) return true;
-    }
+    const checkGridSection = (sectionToCheck) => { if(sectionToCheck.every(cell => doesSymbolMatch(cell.textContent))) return true; }
     
-    const doesSymbolMatch = (symbol) => {
-        if(symbol == currentPlayer.symbol) return true;
-    }
+    const doesSymbolMatch = (symbol) => { if(symbol == currentPlayer.symbol) return true; }
 
     return { playGame };
 })();
