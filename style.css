@@ -51,3 +51,69 @@ body {
 .grid__cell[data-col="1"] {
     border-left: 1px solid black;
 }
+
+/* Modal Window & Form */
+
+.modal {
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    z-index: 1;
+    background-color: white;
+}
+
+.modal__window {
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal__prompt {
+    height: 40rem;
+    width: 40rem;
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    padding: 4rem;
+    gap: 2rem;
+    border: 1px solid black;
+    border-radius: 15px;
+}
+
+.modal__title {
+    font-size: 3.2rem;
+}
+
+.label-box {
+    display: flex;
+    gap: 1rem;
+}
+
+.modal__label {
+    font-size: 1.6rem;
+}
+
+.modal__input {
+    font-size: 1.4rem;
+}
+
+.submit-btn {
+    align-self: flex-end;
+}
+
+.start-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 10rem;
+    width: 15rem;
+}
+
+.btn {
+    height: 2.5rem;
+    width: 7rem;
+}
