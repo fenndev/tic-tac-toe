@@ -66,7 +66,6 @@ const GameManager = (() => {
 
         let tempResult = false;
         for (let section in sectionArray) {
-            console.log(tempResult);
             if(checkGridSection(sectionArray[section])) {
                 tempResult = true;
                 break;
