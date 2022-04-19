@@ -18,6 +18,7 @@ const DOMManager = (() => {
     const playerTwoNameInput = document.querySelector("#player-two");
     const winName = document.querySelector("#win-name");
     const winModal = document.querySelector("#win-display");
+    const restartButton = document.querySelector("#play-again");
     let grid = document.querySelector(".grid");
     const gridCells = grid.querySelectorAll(".grid__cell");
     const updateCellDisplay = (cellToUpdate, currentPlayer) => cellToUpdate.textContent = currentPlayer.symbol;
@@ -34,19 +35,29 @@ const DOMManager = (() => {
         modal.style.display = "none";
     }
 
-    const showWinModal = (currentPlayer) => {
-        winName.textContent = `${currentPlayer.name} won!`;
+    const hideWinModal = () => { winModal.classList.add("hidden");}
+
+    const showWinModal = (currentPlayer = null) => {
+        if(currentPlayer != null) {
+            winName.textContent = `${currentPlayer.name} won!`;
+            winModal.classList.remove("hidden");
+        }
+        else {
+            winName.textContent = `It was a tie!`;
         winModal.classList.remove("hidden");
+        }
+        
     }
 
     const updateCurrentPlayerDisplay = (currentPlayer) => currentPlayerDisplay.textContent = `${currentPlayer.name}'s Turn!`;
 
     const getPlayerOne = () => playerOneNameInput.value;
     const getPlayerTwo = () => playerTwoNameInput.value;
+    const getRestartButton = () => restartButton;
 
 
 
-    return { getGridCells, updateCellDisplay, getStartButton, getSubmitButton, showModalForm, hideModal, getModalForm, updateCurrentPlayerDisplay, getPlayerOne, getPlayerTwo, showWinModal };
+    return { getGridCells, updateCellDisplay, getStartButton, getSubmitButton, getRestartButton, showModalForm, hideModal, getModalForm, updateCurrentPlayerDisplay, getPlayerOne, getPlayerTwo, showWinModal, hideWinModal };
 })();
 
 // Game Manager
@@ -58,6 +69,7 @@ const GameManager = (() => {
     let gameRunning = true;
     const playGame = () => {
         readyStartButton();
+        readyRestartButton();
         readyForm();
         makeCellsClickable();
     }
@@ -86,7 +98,7 @@ const GameManager = (() => {
                 DOMManager.showWinModal(currentPlayer);
             }
             else if(checkForTie())
-                DOMManager.showTieModal();
+                DOMManager.showWinModal();
             else turnShift();
         }
     }
@@ -98,7 +110,14 @@ const GameManager = (() => {
         playerTwo = Player(DOMManager.getPlayerTwo());
         setTurns();
         DOMManager.hideModal();
+        });
+
+    const readyRestartButton = () => {
+        DOMManager.getRestartButton().addEventListener('click', () => {
+            console.log("I'm being pressed!");
+            restartGame();
         })
+    }
 
     const checkForWin = () => {
         let gridArray = Array.from(DOMManager.getGridCells());
@@ -140,6 +159,20 @@ const GameManager = (() => {
     const doesSymbolMatch = (symbol) => { if(symbol == currentPlayer.symbol) return true; }
 
     const isNotEmptyCell = (cellSymbol) => { if(cellSymbol != "*") return true }
+
+    const restartGame = () => {
+        DOMManager.hideWinModal();
+        DOMManager.showModalForm();
+        resetBoard();
+    }
+
+    const resetBoard = () => {
+        let gridArray = DOMManager.getGridCells();
+        console.log(gridArray);
+        for (const cell in gridArray) {
+            gridArray[cell].textContent = "*";
+        }
+    }
 
     return { playGame };
 })();
