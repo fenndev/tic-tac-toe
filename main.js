@@ -31,9 +31,11 @@ const DOMManager = (() => {
         modal.style.display = "none";
     }
 
+    const updateCurrentPlayerDisplay = (currentPlayer) => currentPlayerDisplay.textContent = `${currentPlayer.name}'s Turn!`;
 
 
-    return { getGridCells, updateCellDisplay, getStartButton, getSubmitButton, showModalForm, hideModal, getModalForm, getCurrentPlayerDisplay };
+
+    return { getGridCells, updateCellDisplay, getStartButton, getSubmitButton, showModalForm, hideModal, getModalForm, updateCurrentPlayerDisplay };
 })();
 
 // Game Manager
@@ -60,6 +62,7 @@ const GameManager = (() => {
                 playerTwo.symbol = "X";
         }
         currentPlayer = (randomNum == 0 ? playerOne : playerTwo);
+        DOMManager.updateCurrentPlayerDisplay(currentPlayer);
     }
     const turnShift = () => currentPlayer == playerOne ? currentPlayer = playerTwo : currentPlayer = playerOne;
     const makeCellsClickable = () => DOMManager.getGridCells().forEach(cell => cell.addEventListener('click', () => markCell(cell, currentPlayer)));
