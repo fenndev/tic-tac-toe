@@ -10,11 +10,11 @@
 </head>
 <body>
     <div class="container">
-        <div class="modal">
+        <div class="modal" id="form-display">
             <div class="modal__window">
                 <h1>Tic Tac Toe</h1>
                 <button type="button" class="start-btn btn">Start</button>
-                <form class="modal__prompt" action="#" method="post" name="addPlayerInfo">
+                <form class="modal__prompt" id="form" action="#" method="post" name="addPlayerInfo">
                     <legend class="modal__title">Add Player Information</legend>
                     <div class="label-box">
                         <label class="modal__label" for="">Player One:</label>
@@ -29,10 +29,10 @@
             </div>
             
         </div>
-        <div class="modal hidden">
+        <div class="modal hidden" id="win-display">
             <div class="modal__window">
-                <h2>Player Won!</h2>
-                <button type="button" class="play-again btn">Play Again</button>
+                <h2 class="win-player-info" id="win-name">Player Won!</h2>
+                <button type="button" id="play-again" class="btn">Play Again</button>
             </div>
         </div>
         <div class="header">
