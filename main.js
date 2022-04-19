@@ -13,6 +13,7 @@ const DOMManager = (() => {
     const modalSubmitButton = document.querySelector(".submit-btn");
     const modalForm = document.querySelector(".modal__prompt");
     const modal = document.querySelector(".modal");
+    const currentPlayerDisplay = document.querySelector(".current-player");
     let grid = document.querySelector(".grid");
     const gridCells = grid.querySelectorAll(".grid__cell");
     const updateCellDisplay = (cellToUpdate, currentPlayer) => cellToUpdate.textContent = currentPlayer.symbol;
@@ -20,6 +21,7 @@ const DOMManager = (() => {
     const getStartButton = () => startButton;
     const getSubmitButton = () => modalSubmitButton;
     const getModalForm = () => modalForm;
+    const getCurrentPlayerDisplay = () => currentPlayerDisplay;
     const showModalForm = () => {
         startButton.style.display = "none";
         modalForm.style.display = "flex";
@@ -31,7 +33,7 @@ const DOMManager = (() => {
 
 
 
-    return { getGridCells, updateCellDisplay, getStartButton, getSubmitButton, showModalForm, hideModal, getModalForm };
+    return { getGridCells, updateCellDisplay, getStartButton, getSubmitButton, showModalForm, hideModal, getModalForm, getCurrentPlayerDisplay };
 })();
 
 // Game Manager
